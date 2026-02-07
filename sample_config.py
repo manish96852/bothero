@@ -1,19 +1,29 @@
-HEROKU = True  # NOTE Make it false if you're not deploying on heroku.
+import os
+from dotenv import load_dotenv
 
-# NOTE these values are for heroku & Docker.
+load_dotenv()  # Load environment variables from .env file
+
+# Check if running on cloud (Heroku/Render) or locally
+HEROKU = os.environ.get("HEROKU", "False") == "True"
+
 if HEROKU:
-    from os import environ
-    from dotenv import load_dotenv
-
-    load_dotenv()  # take environment variables from .env.
-    API_ID = int(environ["API_ID"])
-    API_HASH = environ["API_HASH"]
-    SESSION_STRING = environ["SESSION_STRING"]  # Check Readme for session
-    CHAT_ID = int(environ["CHAT_ID"])
-
-# NOTE Fill this if you are not deploying on heroku.
-if not HEROKU:
-    API_ID = 12345678
-    API_HASH = "your_api_hash"
-    SESSION_STRING = "your_session_string"
-    CHAT_ID = -1001234567890  # Your group chat ID
+    # Cloud deployment - use environment variables
+    try:
+        API_ID = int(os.environ["API_ID"])
+        API_HASH = os.environ["API_HASH"]
+        SESSION_STRING = os.environ["SESSION_STRING"]
+        CHAT_ID = int(os.environ["CHAT_ID"])
+    except KeyError as e:
+        print(f"❌ ERROR: Missing environment variable: {e}")
+        print("Please set all required environment variables in your deployment platform:")
+        print("- API_ID")
+        print("- API_HASH")
+        print("- SESSION_STRING")
+        print("- CHAT_ID")
+        exit(1)
+else:
+    # Local deployment - fill these values manually
+    API_ID = 12345678  # Get from my.telegram.org/apps
+    API_HASH = "your_api_hash"  # Get from my.telegram.org/apps
+    SESSION_STRING = "your_session_string"  # Generate using generate_string_session.py
+    CHAT_ID = -1001234567890  # Your group chat ID (use @userinfobot)
