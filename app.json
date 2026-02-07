@@ -1,0 +1,45 @@
+{
+  "name": "Telegram Voice Chat Join Notifier",
+  "description": "Simple Telegram bot that sends notifications when someone joins voice chat",
+  "repository": "https://github.com/yourusername/Telegram_VC_Bot",
+  "logo": "https://i.imgur.com/8S8NVy0.png",
+  "keywords": [
+    "python",
+    "telegram",
+    "bot",
+    "voicechat",
+    "telegram-bot",
+    "pyrogram",
+    "notification"
+  ],
+  "stack": "heroku-20",
+  "env": {
+    "API_ID": {
+            "description": "API_ID of your Telegram Account from my.telegram.org/apps",
+            "required": true
+    },
+    "API_HASH": {
+            "description": "API_HASH of your Telegram Account from my.telegram.org/apps",
+            "required": true
+    },
+    "SESSION_STRING": {
+            "description": "Session string - run generate_string_session.py to get this",
+            "required": true
+    },
+    "CHAT_ID": {
+            "description": "Your group chat ID (use @userinfobot to find it)",
+            "required": true
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
