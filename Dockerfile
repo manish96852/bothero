@@ -1,17 +1,17 @@
-#Python based docker image
-FROM python:3.9.5-buster
+# Python based docker image
+FROM python:3.11-slim
 
-RUN apt-get update && apt-get upgrade -y
+# Set working directory
+WORKDIR /app
 
-#Installing Requirements
-RUN apt-get install -y ffmpeg python3-pip opus-tools
+# Copy requirements first for better caching
+COPY requirements.txt .
 
-#Updating pip
-RUN python3.9 -m pip install -U pip
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy application code
 COPY . .
 
-RUN python3.9 -m pip install -U -r requirements.txt
-
-#Running VCBot
-CMD ["python3.9","main.py"]
+# Run the bot
+CMD ["python", "main.py"]
